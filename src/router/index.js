@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Login from '@/page/login/login'
 import Register from '@/page/register/register'
 import Test from '@/page/test/test'
+import Index from '@/page/index/index'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/test',
       name: 'test',
       component: Test
+    },
+    {
+      path: '/index',
+      name: 'index',
+      component: Index
     }
 
   ]
