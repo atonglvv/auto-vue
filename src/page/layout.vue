@@ -1,4 +1,7 @@
 <template>
+
+<div class="app">
+	<Headers />
 	<div class="index-wrap">
 		<div class="index-left">
 			<div class="index-left-block">
@@ -48,11 +51,27 @@
 			</div>
 		</div>
 	</div>
+
+	<Footers />
+</div>
+
+
+
+
 </template>
+
+
 <script>
+
+import Headers from "../components/headers"
+import Footers from "../components/footers"
 
 export default{
 	name:"layout",
+	components:{
+    Headers,
+    Footers
+  },
 	data(){
 		return{
 

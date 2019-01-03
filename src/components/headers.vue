@@ -2,15 +2,17 @@
 	<div class="app-head">
 
 		<div class="app-head-inner">
-			<router-link to="/">
-        <img src="../assets/logo.png" alt="">
-      </router-link>
-			<span>auto:全球最大的机车资讯网站</span>
+			<div class="head-img">
+				<router-link to="/">
+					<img src="../assets/logo.png" alt="">
+				</router-link>
+				<span>auto:全球最大的机车资讯网站</span>
+			</div>
 			<div class="head-nav">
 				<ul class="nav-list">
-					<li>登录</li>
+					<li><router-link to="/login">登录</router-link></li>
 					<li class="nav-pile">|</li>
-					<li>注册</li>
+					<li><router-link to="/register">注册</router-link></li>
 					<li class="nav-pile">|</li>
 					<li>关于</li>
 				</ul>
@@ -47,6 +49,9 @@ export default{
 }
 .head-logo {
   float: left;
+}
+.head-img{
+	float: left;
 }
 .app-head-inner span{
   position: relative;

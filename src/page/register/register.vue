@@ -1,7 +1,7 @@
 <template>
 
   <div id="app">
-    <el-container>
+    <el-container class="container">
       <el-header>
         <h2>新用户注册</h2>
       </el-header>
@@ -42,11 +42,12 @@
         </el-form-item>
         </el-form>
         <router-view/>
+
       </el-aside>
 
-      <el-main>
-          <img src="src\page\img\1.png">
-      </el-main>
+        <!-- <el-main>
+            <img src="src\page\img\1.png">
+        </el-main> -->
     </el-container>
   </div>
 </template>
@@ -61,7 +62,6 @@ export default {
           mail: '',
           sex: '',
           birthday:''
-
         },
         rules: {
           name: [
@@ -111,9 +111,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   width: 100%;
   height: 100%;
   align-items: center;
+  margin: auto;
+}
+
+.container{
+  width: 100%;
+  margin: auto;
 }
 </style>
