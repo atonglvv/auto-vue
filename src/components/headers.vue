@@ -16,7 +16,7 @@
 					<li class="nav-pile">|</li>
 					<li><router-link to="/register">注册</router-link></li>
 					<li class="nav-pile">|</li>
-					<li>关于</li>
+					<li><router-link to="/about">关于</router-link></li>
 				</ul>
 			</div>
 		</div>
