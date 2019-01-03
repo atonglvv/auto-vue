@@ -301,11 +301,12 @@ export default{
 
 .card{
 	margin-top: 15px;
+	height: 340px;
 }
 
 .card-img{
 	width: 890px;
-	height:100%;
+	height:340px;
 }
 
 .el-carousel__item h3 {
