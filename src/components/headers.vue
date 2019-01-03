@@ -2,14 +2,12 @@
 	<div class="app-head">
 
 		<div class="app-head-inner">
-    
+
 			<div class="head-img">
 				<router-link to="/">
-          <img src="../assets/timg.png" alt="">
+          <img src="../assets/logo.png" alt="">
         </router-link>
         <span>auto:全球最大的机车资讯网站</span>
-        <input></input>
-        <el-button size="mini">搜索</el-button>
 			</div>
 
 			<div class="head-nav">
@@ -21,17 +19,6 @@
 					<li>关于</li>
 				</ul>
 			</div>
-				<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-				  <el-menu-item index="1">首页</el-menu-item>
-					<el-menu-item index="2">品牌车型</el-menu-item>
-					<el-menu-item index="3">机车鉴赏</el-menu-item>
-					<el-menu-item index="4">最新资讯</el-menu-item>
-					<el-menu-item index="5">改装欣赏</el-menu-item>
-				  <el-menu-item index="6">赛事报道</el-menu-item>
-					<el-menu-item index="7">车友交流</el-menu-item>
-					<el-menu-item index="8">驾驶技巧</el-menu-item>
-					<el-menu-item index="9">维护保养</el-menu-item>
-				</el-menu>
 		</div>
 
 	</div>
@@ -51,9 +38,9 @@ export default{
 <style scoped>
 
 .app-head {
-  background: white;
+  background: #363636;
   color: #b2b2b2;
-  height: 110px;
+  height: 80px;
   line-height: 90px;
   width: 100%;
 }
@@ -66,20 +53,23 @@ export default{
   float: left;
 }
 .head-img{
+	height: 80px;
+	margin: auto;
 	float: left;
 }
 .app-head-inner span{
   position: relative;
-  top: -1px;
+  top: -10px;
 	font-family: fantasy;
-
 }
 .app-head-inner img {
-  width: 70px;
+  width: 50px;
   margin-top: 20px;
 }
 .head-nav {
   float: right;
+	height: 80px;
+	margin: auto;
 }
 .head-nav ul {
   overflow: hidden;
