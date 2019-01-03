@@ -1,24 +1,22 @@
 <template>
 
   <div id="app">
-    <el-container class="container">
-      <el-header>
-        <h2>新用户注册</h2>
+    <el-container class="container" >
+      <el-header height="30px">
+        <h2>用户注册</h2>
       </el-header>
-      <el-aside style="width:35%">
-        <p>已有账号？点击<a href="">登录</a></p>
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-aside style="width:35%;margin:auto;">
+        <p>已有账号？点击<router-link style="color:blue" to="/login">登录</router-link></p>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="66px" class="demo-ruleForm" style="margin:10px 0px">
           <el-form-item label="用户名" prop="name">
-          <el-input v-model="ruleForm.name"></el-input>
-        </el-form-item>
-        <!-- <el-form-item label="手机号:" prop="mobil" :rules="filter_rules({required:true,type:'mobile'})">
-          <el-input v-model="dynamicValidateForm.mobil"></el-input>
-        </el-form-item> -->
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="ruleForm.password"></el-input>
+            <el-input v-model="ruleForm.name"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" prop="mail">
-          <el-input v-model="ruleForm.mail" onblur="sendEmail()"></el-input>
+          <!-- <el-input v-model="ruleForm.mail" onblur="sendEmail()"></el-input> -->
+          <el-input v-model="ruleForm.mail"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="password">
+          <el-input v-model="ruleForm.password"></el-input>
         </el-form-item>
         <el-form-item label="生日" required>
           <el-col :span="11">
@@ -27,14 +25,12 @@
             </el-form-item>
           </el-col>
         </el-form-item>
-
         <el-form-item label="性别" prop="sex">
           <el-radio-group v-model="ruleForm.sex">
             <el-radio label="男"></el-radio>
             <el-radio label="女"></el-radio>
           </el-radio-group>
         </el-form-item>
-
 
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">注册</el-button>
@@ -45,9 +41,6 @@
 
       </el-aside>
 
-        <!-- <el-main>
-            <img src="src\page\img\1.png">
-        </el-main> -->
     </el-container>
   </div>
 </template>
@@ -80,7 +73,7 @@ export default {
             { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
           ],
           sex: [
-            { type: 'array', required: true, message: '请选择性别', trigger: 'change' }
+            { required: true, required: true, message: '请选择性别', trigger: 'change' }
           ],
 
         }
@@ -90,7 +83,26 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            console.log("log")
+            console.log(this.ruleForm.sex)
             alert('submit!');
+            this.$axios({
+              method: 'post',
+              url:"http://localhost:8088/auto/user/register",
+              data:this.$qs.stringify({
+                userName:this.ruleForm.name,
+                userPassword:this.ruleForm.password,
+                email:this.ruleForm.mail,
+                birthday:this.ruleForm.birthday,
+                gender:this.ruleForm.sex
+              })
+            })
+            .then(data => {
+              console.log(data)
+            })
+            .catch(error => {
+              console.log(error)
+            })
           } else {
             console.log('error submit!!');
             return false;
@@ -119,7 +131,7 @@ export default {
 }
 
 .container{
-  width: 100%;
-  margin: auto;
+  width: 50%;
+  margin: 120px auto;
 }
 </style>
