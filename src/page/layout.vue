@@ -285,7 +285,8 @@ export default{
 }
 
 .card-img{
-	width: 900px;
+	width: 890px;
+	height:100%;
 }
 
 .el-carousel__item h3 {
