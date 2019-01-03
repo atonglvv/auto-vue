@@ -29,7 +29,7 @@
 		<div class="index-right">
 			<!-- 轮播图片 -->
 			<div class="card">
-				<el-carousel :interval="5000" arrow="always">
+				<el-carousel :interval="5000" arrow="always" height="400px">
 			    <el-carousel-item v-for="item in dataimg" :key="item">
 			      <!-- <h3>{{ item }}</h3> -->
 						<img class="card-img" :src="item.src" />
@@ -37,6 +37,7 @@
 			    </el-carousel-item>
 			  </el-carousel>
 			</div>
+
 			<!-- 热门资讯 -->
 			<div class="index-board-list">
 				<div class="index-board-item" v-for="(borad,index) in boradList" :class="['index-board-'+ borad.tag ,{'line-last' : index%2 !==0}]">
@@ -49,6 +50,7 @@
 					</div>
 				</div>
 			</div>
+
 		</div>
 	</div>
 
@@ -301,19 +303,19 @@ export default{
 
 .card{
 	margin-top: 15px;
-	height: 340px;
+	height: 400px;
 }
 
 .card-img{
-	width: 890px;
-	height:340px;
+	width: 900px;
+	height:400px;
 }
 
 .el-carousel__item h3 {
     color: #475669;
     font-size: 18px;
     opacity: 0.75;
-    line-height: 300px;
+    line-height: 400px;
     margin: 0;
   }
 
