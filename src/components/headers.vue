@@ -2,12 +2,16 @@
 	<div class="app-head">
 
 		<div class="app-head-inner">
+    
 			<div class="head-img">
 				<router-link to="/">
-					<img src="../assets/logo.png" alt="">
-				</router-link>
-				<span>auto:全球最大的机车资讯网站</span>
+          <img src="../assets/timg.png" alt="">
+        </router-link>
+        <span>auto:全球最大的机车资讯网站</span>
+        <input></input>
+        <el-button size="mini">搜索</el-button>
 			</div>
+
 			<div class="head-nav">
 				<ul class="nav-list">
 					<li><router-link to="/login">登录</router-link></li>
@@ -17,6 +21,17 @@
 					<li>关于</li>
 				</ul>
 			</div>
+				<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+				  <el-menu-item index="1">首页</el-menu-item>
+					<el-menu-item index="2">品牌车型</el-menu-item>
+					<el-menu-item index="3">机车鉴赏</el-menu-item>
+					<el-menu-item index="4">最新资讯</el-menu-item>
+					<el-menu-item index="5">改装欣赏</el-menu-item>
+				  <el-menu-item index="6">赛事报道</el-menu-item>
+					<el-menu-item index="7">车友交流</el-menu-item>
+					<el-menu-item index="8">驾驶技巧</el-menu-item>
+					<el-menu-item index="9">维护保养</el-menu-item>
+				</el-menu>
 		</div>
 
 	</div>
@@ -36,9 +51,9 @@ export default{
 <style scoped>
 
 .app-head {
-  background: #363636;
+  background: white;
   color: #b2b2b2;
-  height: 80px;
+  height: 110px;
   line-height: 90px;
   width: 100%;
 }
@@ -55,10 +70,12 @@ export default{
 }
 .app-head-inner span{
   position: relative;
-  top: -20px;
+  top: -1px;
+	font-family: fantasy;
+
 }
 .app-head-inner img {
-  width: 50px;
+  width: 70px;
   margin-top: 20px;
 }
 .head-nav {
