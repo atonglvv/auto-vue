@@ -6,6 +6,7 @@ import Register from '@/page/register/register'
 import Layout from "@/page/layout"
 import About from "@/page/about"
 import Info from "@/page/info/info"
+import Personal from "@/page/personal/personal"
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
       path: '/info',
       name: 'info',
       component: Info
+    },
+    {
+      path: '/personal',
+      name: 'personal',
+      component: Personal
     }
   ]
 })

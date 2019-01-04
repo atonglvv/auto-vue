@@ -1,6 +1,6 @@
 <template>
 	<div class="app-foot">
-		<p>2019-01-01</p>
+
 	</div>
 </template>
 <script>
