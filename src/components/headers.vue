@@ -14,6 +14,8 @@
 				<ul class="nav-list">
 					<li><router-link to="/info">资讯</router-link></li>
 					<li class="nav-pile">|</li>
+					<li><router-link to="/personal">个人中心</router-link></li>
+					<li class="nav-pile">|</li>
 					<li><router-link to="/login">登录</router-link></li>
 					<li class="nav-pile">|</li>
 					<li><router-link to="/register">注册</router-link></li>
