@@ -83,9 +83,6 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log("log")
-            console.log(this.ruleForm.sex)
-            alert('submit!');
             this.$axios({
               method: 'post',
               url:"http://localhost:8088/auto/user/register",
@@ -99,6 +96,9 @@ export default {
             })
             .then(data => {
               console.log(data)
+              this.$router.push({
+                path: '/login',
+              })
             })
             .catch(error => {
               console.log(error)

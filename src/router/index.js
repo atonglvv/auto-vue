@@ -5,6 +5,7 @@ import Login from '@/page/login/login'
 import Register from '@/page/register/register'
 import Layout from "@/page/layout"
 import About from "@/page/about"
+import Info from "@/page/info/info"
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About
+    },
+    {
+      path: '/info',
+      name: 'info',
+      component: Info
     }
   ]
 })
