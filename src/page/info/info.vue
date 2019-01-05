@@ -1,37 +1,51 @@
 <template>
-  <div class="app">
+  <div class="parent">
+    <Headers />
+    <div class="app">
 
-    <!-- <el-row :gutter="12" class="el-row"> -->
-      <el-col :span="8" v-for="item in datainfo" class="el-col">
-        <el-card shadow="hover">
-          <div class="card-left">
-            <img :src="item.image" class="info-img">
-            <!-- <img src="../../assets/slideShow/j2.jpg" class="info-img"> -->
-          </div>
-          <div class="card-right">
-            <div class="content-top">
-              {{item.title}}
+      <!-- <el-row :gutter="12" class="el-row"> -->
+        <el-col :span="8" v-for="item in datainfo" class="el-col">
+          <el-card shadow="hover">
+            <div class="card-left">
+              <img :src="item.image" class="info-img">
+              <!-- <img src="../../assets/slideShow/j2.jpg" class="info-img"> -->
             </div>
-            <div class="content">
-              {{item.title}}
+            <div class="card-right">
+              <div class="content-top">
+                {{item.title}}
+              </div>
+              <div class="content">
+                {{item.title}}
+              </div>
+              <div class="content-bottom">
+                  <div class="author">
+                    {{item.name}}
+                  </div>
+                  <div class="time">
+                    {{item.createdTime}}
+                  </div>
+              </div>
             </div>
-            <div class="content-bottom">
-                <div class="author">
-                  {{item.name}}
-                </div>
-                <div class="time">
-                  {{item.createdTime}}
-                </div>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    <!-- </el-row> -->
+          </el-card>
+        </el-col>
+      <!-- </el-row> -->
+    </div>
+    <Footers />
   </div>
+
 </template>
 
 <script>
+// import Headers from "../../components/headers"
+// import Footers from "../../components/footers"
+import Headers from "@/components/headers"
+import Footers from "@/components/footers"
 export default {
+  name:"info",
+  components:{
+    Headers,
+    Footers
+  },
   data(){
     return{
       title:'',
