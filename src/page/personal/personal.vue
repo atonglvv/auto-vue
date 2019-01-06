@@ -16,6 +16,9 @@
         </div>
 
         <div class="t-r-m">
+          <router-link style="color:blue" to="/"><i class="el-icon-back"></i>返回首页</router-link>
+        </div>
+        <div class="t-r-m">
           <router-link style="color:blue" to="/modify"><i class="el-icon-edit-outline"></i>修改资料</router-link>
         </div>
       </div>
@@ -376,7 +379,7 @@ export default {
   text-align: center;
 }
 .t-r-m{
-  margin-top: 40px;
+  margin-top: 20px;
   font-size: 15px;
   text-align: center;
 }

@@ -16,35 +16,6 @@
 
     <div class="personal">
       <el-tabs :tab-position="tabPosition" style="height: 800px;">
-        <el-tab-pane>
-          <span slot="label"><i class="el-icon-setting"></i> 基本信息</span>
-          <div class="personal-i">基本信息</br>
-          </div>
-          <hr>
-          <div class="img">
-            <img src="../../assets/images/tx.jpg" alt="">
-          </div>
-          <div class="r-img">
-            <ul>
-              <br/>
-            <li>用户名:吕小小英雄</li><br/>
-            <li>性别：男</li><br/>
-            <li><i class="el-icon-date"></i>生日：1990-1-1</li><br/>
-            <li><i class="el-icon-mobile-phone"></i>电话：123</li><br/>
-            <li>个人邮箱：lxxyx@163.com</li><br/><br/><br/>
-            </ul>
-          </div>
-          <div class="u-img">
-            <ul>
-
-              <li>个人介绍：12345677653211111111111111111111111111111111111111111。</li><br/><br/>
-            </ul>
-          </div>
-
-        </el-tab-pane>
-
-
-
 
         <el-tab-pane>
           <span slot="label"><i class="el-icon-edit"></i> 信息编辑</span>
