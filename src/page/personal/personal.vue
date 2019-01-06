@@ -28,29 +28,37 @@
       <el-tabs :tab-position="tabPosition" style="height: 800px;">
 
 
-
-
         <!--  用户所有发布的信息列表  -->
         <el-tab-pane>
           <span slot="label"><i class="el-icon-tickets"></i> 我的发布</span>
           <div class="personal-i">我的发布</br>
           </div><hr>
-          <div class="out">
-            <div class="personal-title" style="font-size:25px;margin-top:-1px;">
-              <br/><br/>
-              《这是标题》
-            </div>
-            <div class="comment">
-              内容摘要：你的牌打的也忒好啦
-            </div>
-            <div class="personal-content">
-              ------------------------发布日期：2019-1-1
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <el-button type="danger" icon="el-icon-delete" circle></el-button>
-
+          <div class="info">
+            <div class="out" v-for="item in mypost">
+              <div class="personal-title" style="font-size:25px;margin-top:-1px;">
+                <br/><br/>
+                {{item.title}}
+              </div>
+              <div class="comment">
+                内容摘要：{{item.title}}
+              </div>
+              <div class="personal-content">
+                发布日期：{{item.createdTime}}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-button type="danger" icon="el-icon-delete" circle @click="deletepost(item.id)"></el-button>
+              </div>
             </div>
           </div>
+
+          <el-pagination
+            class="pagination"
+            @current-change="handleCurrentChange"
+            :page-size="pageSizeInfo"
+            layout="prev, pager, next"
+            :total="totalInfo">
+            <!-- :pager-count="pageCountInfo" -->
+          </el-pagination>
         </el-tab-pane>
 
 
@@ -60,21 +68,31 @@
           <span slot="label"><i class="el-icon-edit"></i> 我的评论</span>
           <div class="personal-i">我的评论</br>
           </div><hr>
-          <div class="out">
-            <div class="personal-title" style="font-size:25px;margin-top:-1px;">
-              <br/><br/>
-              《这是标题》
-            </div>
-            <div class="comment">
-              来自我的评论：你的牌打的也忒好啦
-            </div>
-            <div class="personal-content">
-              ------------------------评论日期：2019-1-1
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <el-button type="danger" icon="el-icon-delete" circle></el-button>
+          <div class="info">
+            <div class="out" v-for="item in myComment">
+              <div class="personal-title" style="font-size:25px;margin-top:-1px;">
+                <br/><br/>
+                {{item.title}}
+              </div>
+              <div class="comment">
+                来自我的评论：{{item.content}}
+              </div>
+              <div class="personal-content">
+                评论日期：{{item.createdTime}}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-button type="danger" icon="el-icon-delete" circle @click="deleteComment(item.id)"></el-button>
+              </div>
             </div>
           </div>
+
+          <el-pagination
+            class="pagination"
+            @current-change="handleCommentChange"
+            :page-size="pageSizeComment"
+            layout="prev, pager, next"
+            :total="totalComment">
+          </el-pagination>
         </el-tab-pane>
 
 
@@ -188,17 +206,147 @@ export default {
        fileList3: [{
           name: '',
           url: ''
-        }, {
+        },
+        {
           name: '',
           url: ''
         }],
-      tabPosition: 'left'
+      tabPosition: 'left',
+
+      mypost:[],
+      pageSizeInfo:2,
+      pageCountInfo:1,
+      totalInfo:0,
+
+      myComment:[],
+      pageSizeComment:2,
+      totalComment:0
+    }
+  },
+
+
+  created(){
+    this.selectMyPost(1,1,2);
+    this.selectMyComment(1,1,2);
+
+  },
+
+
+  methods:{
+    // 删除资讯
+    deletepost(infoId){
+      // 确认框
+      this.$confirm('是否要删除该条资讯?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+          this.$axios({
+            method: 'post',
+            url:"http://localhost:8088/auto/info/deleteInfo",
+            data:this.$qs.stringify({
+              id:infoId
+            })
+          })
+          .then(data => {
+            this.selectMyPost(1,this.pageCountInfo,this.pageSizeInfo);
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }).catch(() => {
+        that.$message({
+            type: 'info',
+            message: '已取消删除'
+        });
+      });
+    },
+
+    // 删除评论
+    deleteComment(commentId){
+      // 确认框
+      this.$confirm('是否要删除该条评论?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+          this.$axios({
+            method: 'post',
+            url:"http://localhost:8088/auto/comment/deleteComment",
+            data:this.$qs.stringify({
+              id:commentId
+            })
+          })
+          .then(data => {
+            this.selectMyComment(1,this.pageCountComment,this.pageSizeComment);
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }).catch(() => {
+          that.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+
+    //Info分页
+    handleCurrentChange(val) {
+        this.pageCountInfo = val;
+        this.selectMyPost(1,this.pageCountInfo,this.pageSizeInfo);
+    },
+    //Comment分页
+    handleCommentChange(val) {
+      this.pageCountComment = val;
+      this.selectMyComment(1,this.pageCountComment,this.pageSizeComment);
+    },
+
+    // 调用后台用户发布资讯接口
+    selectMyPost(userId,pageNum,pageSize){
+      this.$axios({
+        method: 'get',
+        url:"http://localhost:8088/auto/info",
+        params:{
+          pageNum:pageNum,
+  				pageSize:2,
+          userId:1
+        }
+      })
+      .then(data => {
+        console.log(data)
+        this.mypost = data.data.res.list;
+        this.totalInfo = data.data.res.total;
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    selectMyComment(userId,pageNum,pageSize){
+      this.$axios({
+        method: 'get',
+        url:"http://localhost:8088/auto/comment/queryMyComment",
+        params:{
+          pageNum:pageNum,
+          pageSize:pageSize,
+          userId:1
+        }
+      })
+      .then(data => {
+        console.log(data)
+        this.myComment = data.data.res.list;
+        this.totalComment = data.data.res.total;
+      })
+      .catch(error => {
+        console.log(error)
+      })
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .personal-top{
 
   height: 230px;
@@ -310,5 +458,15 @@ export default {
 .btn{
   width: 100%;
   text-align: center;
+}
+.app{
+  height: 100%;
+}
+
+.info{
+  height: 500px;
+}
+.pagination{
+  padding-left: 400px;
 }
 </style>
