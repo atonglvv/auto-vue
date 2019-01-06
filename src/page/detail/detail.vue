@@ -56,9 +56,71 @@
         《这是标题111》<br/><br/>《这是标题222》<br/><br/>《这是标题333》<br/><br/>
       </div>
     </div>
-    <div class="right">
-
     </div>
+    <div class="footer">
+      <div class="footer-1">
+        <el-collapse v-model="activeNames" @change="handleChange">
+          <el-collapse-item title="点击评论" name="1" style="text-align:center;">
+            <el-form ref="form" :model="form" label-width="80px">
+              <el-form-item>
+                <el-input v-model="form.comment"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="onSubmit">发表</el-button>
+              </el-form-item>
+            </el-form>
+          </el-collapse-item>
+        </el-collapse>
+      </div>
+
+
+      <div class="footer-2-0">
+      <el-rate
+        v-model="value2"
+        :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+      </el-rate><br/>
+      </div>
+      <div class="footer-2-1">
+        <i class="el-icon-view">：999次</i>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <i class="el-icon-star-on">：999次</i>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <el-button type="warning" icon="el-icon-star-off" circle size="mini"></el-button>
+      </div>
+      <hr/>
+
+      <div class="footer-3">
+
+        <div class="footer-3-1">
+          来自用户--吕小小英雄--的评论：
+        </div>
+        <div class="footer-3-2">
+          你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！
+          <hr/>
+        </div><br/>
+
+        <div class="footer-3-1">
+          来自用户--吕中中英雄--的评论：
+        </div>
+        <div class="footer-3-2">
+          你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！
+          <hr/>
+        </div><br/>
+
+        <div class="footer-3-1">
+          来自用户--吕大大英雄--的评论：
+        </div>
+        <div class="footer-3-2">
+          你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！
+          <hr/>
+        </div><br/>
+      </div>
+
+
     </div>
   </div>
 </template>
@@ -67,7 +129,11 @@
 export default {
   data(){
     return{
-      id:""
+      form: {
+          comment: ''
+        },
+      id:"",
+      value2: null
     }
   },
   created() {
@@ -84,9 +150,10 @@ export default {
 }
 
 .left{
-  height: 1200px;
+  height: 900px;
   float: left;
   width: 65%;
+
 }
 .left-content{
   margin-top: 40px;
@@ -107,15 +174,16 @@ export default {
   height: 500px;
 }
 .midd{
-  height: 1200px;
+  height: 900px;
   float: left;
-  width: 27%;
+  width: 35%;
+
 }
 .midd-in{
-  height: 1000px;
+  height: 800px;
   margin-left: 10%;
-  margin-right: 10%;
-  width: 80%;
+  margin-right: 20%;
+  width: 70%;
   background-color: white;
   border-radius:25px;
 }
@@ -143,9 +211,38 @@ export default {
     text-align: center;
     font-size: 20px;
 }
-.right{
-  height: 1200px;
-  width: 8%;
+
+.footer{
   float: left;
+  margin-left: 5%;
+  margin-right: 5%;
+  height: 800px;
+  width: 90%;
+  background-color: white;
+  border-radius:25px;
+}
+.footer-1{
+  margin-left: 15%;
+  margin-top: 20px;
+  width: 70%;
+}
+.footer-2-0{
+  margin-top: 20px;
+  margin-left: 40%;
+  float: left;
+}
+.footer-2-1{
+  margin-left: 60%;
+  margin-top: 20px;
+  width: 70%;
+}
+.footer-3-1{
+  margin-left: 20px;
+  font-size: 15px;
+}
+.footer-3-2{
+  margin-top: 10px;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 </style>
