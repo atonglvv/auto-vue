@@ -2,6 +2,14 @@
   <div class="parent">
     <Headers />
     <div class="app">
+      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+        <el-form-item label="">
+          <el-input v-model="formInline.title" placeholder="搜索资讯"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">搜索</el-button>
+        </el-form-item>
+      </el-form>
 
       <!-- <el-row :gutter="12" class="el-row"> -->
         <el-col :span="8" v-for="item in datainfo" class="el-col">
@@ -49,7 +57,11 @@ export default {
   data(){
     return{
       title:'',
-			datainfo: []
+			datainfo: [],
+      formInline: {
+        title: '',
+        region: ''
+      }
 		}
   },
   created(){
@@ -59,11 +71,30 @@ export default {
     })
     .then(data => {
       console.log(data)
-      this.datainfo = data.data.res;
+      this.datainfo = data.data.res.list;
     })
     .catch(error => {
       console.log(error)
     })
+  },
+  methods: {
+    onSubmit() {
+      this.$axios({
+        method: 'get',
+        url:"http://localhost:8088/auto/info",
+        params:{
+          title:this.formInline.title
+        }
+      })
+      .then(data => {
+        console.log(data)
+        this.datainfo = data.data.res.list;
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      console.log('submit!');
+    }
   }
 }
 </script>
@@ -71,7 +102,7 @@ export default {
 <style>
 
 .app{
-  margin: auto;
+  margin: 20px auto;
   width: 800px;
   height: 2000px;
 }
@@ -125,7 +156,10 @@ export default {
   line-height: 22px;
   padding: 52px 0;
   text-align: left;
+}
 
+.demo-form-inline{
+  float: right;
 }
 
 </style>

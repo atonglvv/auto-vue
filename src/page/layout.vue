@@ -17,20 +17,26 @@
 					<div v-if="index%2 == 0" class="hr"></div>
 				</template>
 			</div>
+			<!-- 热门资讯 -->
 			<div class="index-left-block lastest-news">
 				<h2>热门资讯</h2>
 				<ul>
 					<li v-for="item in news">
-						<a target="_blank" :href="item.url">{{ item.author_name }}</a>
+						<!-- <a target="_blank" href="info" class="hot-info">{{ item.title }}</a> -->
+						<router-link class="hot-info" :to="{path:'/detail',
+																								query:{
+																									id:item.id
+																								}}">{{ item.title }}</router-link>
 					</li>
 				</ul>
 			</div>
 		</div>
+		<!-- 右侧部分 -->
 		<div class="index-right">
 			<!-- 轮播图片 -->
 			<div class="card">
 				<el-carousel :interval="5000" arrow="always" height="400px">
-			    <el-carousel-item v-for="item in dataimg" :key="item">
+			    <el-carousel-item v-for="(item,index) in dataimg" :key="index">
 			      <!-- <h3>{{ item }}</h3> -->
 						<img class="card-img" :src="item.src" />
 
@@ -44,9 +50,9 @@
 					<div class="index-board-item-inner">
 						<h2>{{ borad.title }}</h2>
 						<p>{{ borad.desc }}</p>
-						<div class="index-board-button">
+						<!-- <div class="index-board-button">
 							<router-link :to="{path:'/details/'+borad.tag}" class="button">立即购买</router-link>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
@@ -170,18 +176,21 @@ export default{
 		}
 	},
 	created(){
-		this.$axios.get("http://www.wwtliu.com/sxtstu/news/juhenews.php",{
+		this.$axios({
+      method: 'get',
+      url:"http://localhost:8088/auto/info",
 			params:{
-				count:10,
-				type:"top"
+				pageNum:1,
+				pageSize:5
 			}
-		})
-		.then(res => {
-			this.news = res.data;
-		})
-		.catch(error => {
-			console.log(error)
-		})
+    })
+    .then(data => {
+      console.log(data)
+      this.news = data.data.res.list;
+    })
+    .catch(error => {
+      console.log(error)
+    })
 	}
 }
 
@@ -326,5 +335,9 @@ export default{
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
   }
+
+	.hot-info:hover{
+		color: red;
+	}
 
 </style>
