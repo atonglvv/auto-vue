@@ -1,59 +1,148 @@
 <template>
   <div class="app">
     <div class="personal-top">
+
+
+
+      <!--  头像  -->
       <div class="top-left">
         <img src="../../assets/images/tx.jpg" alt="">
       </div>
+
+      <!--  个人信息  -->
       <div class="top-right">
         <div class="t-r-t">
           吕小小英雄
         </div>
+
         <div class="t-r-m">
           <router-link style="color:blue" to="/modify"><i class="el-icon-edit-outline"></i>修改资料</router-link>
         </div>
       </div>
     </div>
 
+
+
+
     <div class="personal">
       <el-tabs :tab-position="tabPosition" style="height: 800px;">
-        <el-tab-pane>
-          <span slot="label"><i class="el-icon-edit"></i> 我的评论</span>
-          <div class="personal-i">我的评论</br>
-          </div><hr>
-          <div class="personal-title">
-            《这是标题》
-          </div>
-          <div class="comment">
-            来自我的评论：你的牌打的也忒好啦
-          </div>
-          <div class="personal-content">
-            评论日期：2019-1-1
 
-            <el-button type="danger" icon="el-icon-delete" circle></el-button>
-            <hr/>
+
+
+
+        <!--  用户所有发布的信息列表  -->
+        <el-tab-pane>
+          <span slot="label"><i class="el-icon-tickets"></i> 我的发布</span>
+          <div class="personal-i">我的发布</br>
+          </div><hr>
+          <div class="out">
+            <div class="personal-title" style="font-size:25px;margin-top:-1px;">
+              <br/><br/>
+              《这是标题》
+            </div>
+            <div class="comment">
+              内容摘要：你的牌打的也忒好啦
+            </div>
+            <div class="personal-content">
+              ------------------------发布日期：2019-1-1
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <el-button type="danger" icon="el-icon-delete" circle></el-button>
+
+            </div>
           </div>
         </el-tab-pane>
 
 
 
+        <!--  用户评论过的资讯列表  -->
+        <el-tab-pane>
+          <span slot="label"><i class="el-icon-edit"></i> 我的评论</span>
+          <div class="personal-i">我的评论</br>
+          </div><hr>
+          <div class="out">
+            <div class="personal-title" style="font-size:25px;margin-top:-1px;">
+              <br/><br/>
+              《这是标题》
+            </div>
+            <div class="comment">
+              来自我的评论：你的牌打的也忒好啦
+            </div>
+            <div class="personal-content">
+              ------------------------评论日期：2019-1-1
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <el-button type="danger" icon="el-icon-delete" circle></el-button>
+            </div>
+          </div>
+        </el-tab-pane>
+
+
+
+
+        <!--  用户收藏的资讯列表  -->
         <el-tab-pane>
           <span slot="label"><i class="el-icon-star-on"></i> 我的收藏</span>
           <div class="personal-i">
             我的收藏</br>
           </div><hr>
-          <div class="personal-title">
-            《这是标题》
-          </div>
-          <div class="personal-content">
-            收藏日期：2019-1-1
-            <el-button type="primary" round>查看</el-button>
-            <el-button type="danger" icon="el-icon-delete" circle></el-button>
-            <hr/>
+          <div class="out">
+            <div class="personal-title"style="font-size:25px;margin-top:1px;">
+              <br/><br/>
+              《这是标题》
+            </div>
+            <div class="personal-content">
+              收藏日期：2019-1-1
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <el-button type="primary" round>查看</el-button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <el-button type="danger" icon="el-icon-delete" circle></el-button>
+            </div></div>
+        </el-tab-pane>
+
+
+
+        <!--  用户发布资讯界面  -->
+        <el-tab-pane>
+          <span slot="label"><i class="el-icon-circle-plus"></i> 资讯发布</span>
+          <div class="personal-i">资讯发布</br>
+          </div><hr>
+          <div class="out-2">
+            <div class="out2top">
+              有什么第一手资讯分享给大家？
+            </div>
+            <div class="out2body">
+              <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item>
+                  <el-input v-model="form.name" style="width:450px;"placeholder="请输入标题"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-input type="textarea":rows="15" v-model="form.desc" style="width:500px;"></el-input>
+                </el-form-item>
+
+
+                  <el-upload
+                    class="upload-demo"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :on-change="handleChange"
+                    :file-list="fileList3">
+                    <el-form-item>
+                      <el-button  type="primary" style="margin-left:200px;"><i class="el-icon-picture"></i></el-button>
+                      <el-button type="primary" @click="onSubmit">发布资讯</el-button>
+                    </el-form-item>
+
+                </el-upload>
+
+
+              </el-form>
+            </div>
+
           </div>
         </el-tab-pane>
 
 
 
+        <!--  用户账户信息  -->
         <el-tab-pane>
           <span slot="label"><i class="el-icon-setting"></i> 账户信息</span>
           <div class="personal-i">账户信息</br>
@@ -92,6 +181,17 @@
 export default {
   data(){
     return {
+       form: {
+          title:'',
+          desc:''
+       },
+       fileList3: [{
+          name: '',
+          url: ''
+        }, {
+          name: '',
+          url: ''
+        }],
       tabPosition: 'left'
     }
   }
@@ -132,7 +232,31 @@ export default {
   font-size: 15px;
   text-align: center;
 }
-
+.out{
+  border:1px dashed;
+  border-radius:20px;
+  margin-left: 100px;
+  background-color: white;
+  width: 70%;
+}
+.out-2{
+  border:1px dashed;
+  border-radius:20px;
+  margin-left: 100px;
+  background-color: white;
+  width: 70%;
+  height: 600px;
+}
+.out2top{
+  margin-top: 20px;
+  margin-left: 50px;
+  font-size: 20px;
+  font-family: sans-serif;
+  color: #87CEFA;
+}
+.out2body{
+  margin-top: 20px;
+}
 .personal{
   margin-top: 50px;
   margin-left: 150px;
@@ -147,19 +271,16 @@ export default {
   font-size: 20px;
   color: red;
 }
-.personal-content hr{
-  border:1px dashed gray;
-}
+
 
 .personal-content{
   margin-top: 30px;
-  margin-left: 100px;
+  margin-left: 280px;
+  margin-bottom: 20px;
   font-size: 18px;
 }
 .personal-title{
-  margin-left:100px;
-  margin-top: 20px;
-  font-size: 15px;
+  margin-left: 85px;
   color: red;
 }
 .img{
