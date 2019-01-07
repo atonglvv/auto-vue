@@ -107,18 +107,30 @@
           <div class="personal-i">
             我的收藏</br>
           </div><hr>
-          <div class="out">
-            <div class="personal-title"style="font-size:25px;margin-top:1px;">
-              <br/><br/>
-              《这是标题》
+          <div class="info">
+            <div class="out" v-for="item in myCollection">
+              <div class="personal-title"style="font-size:25px;margin-top:1px;">
+                <br/><br/>
+                {{item.title}}
+              </div>
+              <div class="personal-content">
+                收藏日期：{{item.createdTime}}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <!-- <el-button type="primary" round>查看</el-button> -->
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <el-button type="danger" icon="el-icon-delete" circle @click="deleteCollection(item.id)"></el-button>
+              </div>
             </div>
-            <div class="personal-content">
-              收藏日期：2019-1-1
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <el-button type="primary" round>查看</el-button>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              <el-button type="danger" icon="el-icon-delete" circle></el-button>
-            </div></div>
+          </div>
+
+          <el-pagination
+            class="pagination"
+            @current-change="handleCollectionChange"
+            :page-size="pageSizeCollection"
+            layout="prev, pager, next"
+            :total="totalCollection">
+          </el-pagination>
+
         </el-tab-pane>
 
 
@@ -129,33 +141,53 @@
           <div class="personal-i">资讯发布</br>
           </div><hr>
           <div class="out-2">
-            <div class="out2top">
+            <!-- <div class="out2top">
               有什么第一手资讯分享给大家？
-            </div>
+            </div> -->
             <div class="out2body">
-              <el-form ref="form" :model="form" label-width="80px">
+              <!-- <el-form ref="form" :model="form" label-width="80px">
                 <el-form-item>
                   <el-input v-model="form.name" style="width:450px;"placeholder="请输入标题"></el-input>
                 </el-form-item>
-                <el-form-item>
+
+                <el-form-item >
                   <el-input type="textarea":rows="15" v-model="form.desc" style="width:500px;"></el-input>
                 </el-form-item>
 
-
+                <el-form-item >
                   <el-upload
-                    class="upload-demo"
                     action="https://jsonplaceholder.typicode.com/posts/"
-                    :on-change="handleChange"
-                    :file-list="fileList3">
-                    <el-form-item>
-                      <el-button  type="primary" style="margin-left:200px;"><i class="el-icon-picture"></i></el-button>
-                      <el-button type="primary" @click="onSubmit">发布资讯</el-button>
-                    </el-form-item>
+                    list-type="picture-card"
+                    :on-preview="handlePictureCardPreview"
+                    :on-remove="handleRemove">
+                    <i class="el-icon-plus"></i>
+                  </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                    <img width="100%" :src="dialogImageUrl" alt="">
+                  </el-dialog>
+                </el-form-item>
 
-                </el-upload>
+              </el-form> -->
 
-
+              <el-form :model="form" :rules="rules2" ref="addform" label-width="80px">
+                <el-form-item>
+                  <el-input v-model="form.title" style="width:450px;"placeholder="请输入标题"></el-input>
+                </el-form-item>
+                <el-form-item >
+                  <el-input type="textarea":rows="15" v-model="form.desc" style="width:500px;"></el-input>
+                </el-form-item>
+                <el-form-item  :label-width="formLabelWidth">
+                    <el-upload action="" list-type="picture-card" :on-change="handlePictureCardChange" :on-remove="handleRemove" :limit="1" :before-upload="beforeAvatarUpload" :auto-upload="false" :file-list="formList">
+                        <i class="el-icon-plus"></i>
+                    </el-upload>
+                    <el-dialog :visible.sync="dialogVisible">
+                        <img width="100%" :src="imageRef" alt="">
+                    </el-dialog>
+                </el-form-item>
               </el-form>
+              <div slot="footer" class="post-footer">
+                  <el-button type="primary" @click="postInfo">确 定</el-button>
+              </div>
             </div>
 
           </div>
@@ -204,7 +236,9 @@ export default {
     return {
        form: {
           title:'',
-          desc:''
+          desc:'',
+          file: '',
+          imageRefSize:''
        },
        fileList3: [{
           name: '',
@@ -223,7 +257,14 @@ export default {
 
       myComment:[],
       pageSizeComment:2,
-      totalComment:0
+      pageCountComment:1,
+      totalComment:0,
+
+      myCollection:[],
+      pageSizeCollection:2,
+      pageCountCollection:1,
+      totalCollection:0,
+
     }
   },
 
@@ -231,7 +272,7 @@ export default {
   created(){
     this.selectMyPost(1,1,2);
     this.selectMyComment(1,1,2);
-
+    this.selectMyCollection(1,1,2);
   },
 
 
@@ -258,7 +299,7 @@ export default {
             console.log(error)
           })
         }).catch(() => {
-        that.$message({
+        this.$message({
             type: 'info',
             message: '已取消删除'
         });
@@ -287,7 +328,36 @@ export default {
             console.log(error)
           })
         }).catch(() => {
-          that.$message({
+          this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
+
+    // 取消收藏
+    deleteCollection(collectionId){
+      // 确认框
+      this.$confirm('是否要取消关注?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+          this.$axios({
+            method: 'post',
+            url:"http://localhost:8088/auto/collection/deleteCollection",
+            data:this.$qs.stringify({
+              id:collectionId
+            })
+          })
+          .then(data => {
+            this.selectMyCollection(1,this.pageCountComment,this.pageSizeComment);
+          })
+          .catch(error => {
+            console.log(error)
+          })
+        }).catch(() => {
+          this.$message({
           type: 'info',
           message: '已取消删除'
         });
@@ -303,6 +373,9 @@ export default {
     handleCommentChange(val) {
       this.pageCountComment = val;
       this.selectMyComment(1,this.pageCountComment,this.pageSizeComment);
+    },
+    handleCollectionChange(val) {
+      this.selectMyCollection(1,val,this.pageSizeComment);
     },
 
     // 调用后台用户发布资讯接口
@@ -344,7 +417,93 @@ export default {
       .catch(error => {
         console.log(error)
       })
-    }
+    },
+
+    selectMyCollection(userId,pageNum,pageSize){
+      this.$axios({
+        method: 'get',
+        url:"http://localhost:8088/auto/collection/queryMyCollection",
+        params:{
+          pageNum:pageNum,
+          pageSize:pageSize,
+          userId:1
+        }
+      })
+      .then(data => {
+        console.log(data)
+        this.myCollection = data.data.res.list;
+        this.totalCollection= data.data.res.total;
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    postInfo() {
+        var that = this;
+        this.$refs.addform.validate((valid) => {
+
+          if (valid) {
+            console.log(this.form);
+            if (this.form.title == '') {
+                // this.$message.error('上传图片不能为空!');
+                this.$message.error('标题不能为空');
+                return false;
+            }
+            if (this.form.desc == '') {
+                this.$message.error('内容不能为空');
+                return false;
+            }
+            if (this.form.file == '') {
+                this.$message.error('上传图片不能为空!');
+                return false;
+            }
+            if (this.form.imageRefSize > 1) {
+                this.$message.error('上传图片大小不能超过 2MB!');
+                return false;
+            }
+            let formData = new FormData();
+            formData.append('id',1);
+            formData.append('title', this.form.title);
+            formData.append('image', this.form.file);
+            formData.append('content', this.form.desc);
+            console.log(formData);
+            // that.loading = true;
+            this.$axios.post('http://localhost:8088/auto/info/insertInfo', formData)
+              .then(function(response) {
+                  console.log(response);
+                  that.$message({
+                    type: 'success',
+                    message: '发布成功，可在我的发布中查看'
+                  });
+
+                  that.clearFrom();
+              })
+              .catch(function(error) {
+                  console.log(error);
+                  // that.loading = false;
+              });
+            } else {
+                console.log('error submit!!');
+                return false;
+            }
+      });
+    },
+
+    handlePictureCardChange(file, fileList) {
+        // this.form.imageRef = file.url;
+        this.form.file = file.raw;
+        this.form.imageRefSize = file.size / 1024 / 1024;
+    },
+
+    clearFrom() {
+            //清理表单
+            this.form.title = '';
+            this.form.desc = '';
+            this.form.imageRefSize = '';
+            this.formList = [];
+    },
+
   }
 }
 </script>
@@ -396,7 +555,7 @@ export default {
   margin-left: 100px;
   background-color: white;
   width: 70%;
-  height: 600px;
+  height: 800px;
 }
 .out2top{
   margin-top: 20px;
@@ -471,5 +630,8 @@ export default {
 }
 .pagination{
   padding-left: 400px;
+}
+.post-footer{
+  margin-left: 80px;
 }
 </style>
