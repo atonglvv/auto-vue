@@ -14,7 +14,10 @@
 				<ul class="nav-list">
 					<li><router-link to="/info">资讯</router-link></li>
 					<li class="nav-pile">|</li>
-					<li v-show="isShow"><router-link to="/personal">{{name}}</router-link></li>
+					<li v-show="isShow"><router-link :to="{path:'/personal',
+																							query:{
+																								id:user.id
+																							}}">{{name}}</router-link></li>
 					<li v-show="isShow" class="nav-pile">|</li>
 					<li v-show="isRlShow"><router-link to="/login">登录</router-link></li>
 					<li v-show="isRlShow" class="nav-pile">|</li>
@@ -36,19 +39,29 @@ export default{
 			name:'',
 			isShow:false,
 			isRlShow:false,
+			user:{},
 		}
 	},
 	created(){
 		this.getSession();
 	},
+
 	methods: {
 		getSession(){
 			// alert("ahh");
 			this.name = sessionStorage.getItem("name");
+			console.log(this.name);
+			// var userJsonStr = sessionStorage.getItem('user');
+			this.user = JSON.parse(sessionStorage.getItem('user'));
+			if (this.user != null) {
+				this.name = this.user.name;
+			}
+			console.log(this.name);
 			if (this.name != null) {
 				this.isShow = true;
 				this.isRlShow = false;
 			}else {
+				console.log(this.name);
 				this.isShow = false;
 				this.isRlShow = true;
 			}
