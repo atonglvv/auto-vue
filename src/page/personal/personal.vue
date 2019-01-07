@@ -222,7 +222,7 @@
             </ul>
           </div>
           <div class="btn">
-            <el-button type="danger" round>退出登录</el-button>
+            <el-button type="danger" round @click="logout">退出登录</el-button>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -495,7 +495,7 @@ export default {
         this.form.file = file.raw;
         this.form.imageRefSize = file.size / 1024 / 1024;
     },
-
+    //清空资讯发布表单
     clearFrom() {
             //清理表单
             this.form.title = '';
@@ -503,6 +503,13 @@ export default {
             this.form.imageRefSize = '';
             this.formList = [];
     },
+    //清空sessionStorage
+    logout(){
+      sessionStorage.clear();
+      this.$router.push({
+        path: '/',
+      })
+    }
 
   }
 }

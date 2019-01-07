@@ -14,12 +14,12 @@
 				<ul class="nav-list">
 					<li><router-link to="/info">资讯</router-link></li>
 					<li class="nav-pile">|</li>
-					<li><router-link to="/personal">个人中心</router-link></li>
-					<li class="nav-pile">|</li>
-					<li><router-link to="/login">登录</router-link></li>
-					<li class="nav-pile">|</li>
-					<li><router-link to="/register">注册</router-link></li>
-					<li class="nav-pile">|</li>
+					<li v-show="isShow"><router-link to="/personal">{{name}}</router-link></li>
+					<li v-show="isShow" class="nav-pile">|</li>
+					<li v-show="isRlShow"><router-link to="/login">登录</router-link></li>
+					<li v-show="isRlShow" class="nav-pile">|</li>
+					<li v-show="isRlShow"><router-link to="/register">注册</router-link></li>
+					<li v-show="isRlShow" class="nav-pile">|</li>
 					<li><router-link to="/about">关于</router-link></li>
 				</ul>
 			</div>
@@ -33,7 +33,25 @@ export default{
 	name:"headers",
 	data(){
 		return{
-
+			name:'',
+			isShow:false,
+			isRlShow:false,
+		}
+	},
+	created(){
+		this.getSession();
+	},
+	methods: {
+		getSession(){
+			// alert("ahh");
+			this.name = sessionStorage.getItem("name");
+			if (this.name != null) {
+				this.isShow = true;
+				this.isRlShow = false;
+			}else {
+				this.isShow = false;
+				this.isRlShow = true;
+			}
 		}
 	}
 }

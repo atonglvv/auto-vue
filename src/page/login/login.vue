@@ -65,9 +65,9 @@ export default {
             })
             .then(data => {
               console.log(data);
-              alert("ahh")
               // 判断用户名密码是否正确，如果正确则跳转到首页
               if (data.data.status == 1) {
+                sessionStorage.setItem("name", "atong");
                 this.$router.push({
                   path: '/',
                 })
