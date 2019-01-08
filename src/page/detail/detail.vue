@@ -142,7 +142,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .top{
   height: 200px;
   text-align: center;

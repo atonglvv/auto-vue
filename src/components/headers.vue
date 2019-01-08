@@ -16,8 +16,9 @@
 					<li class="nav-pile">|</li>
 					<li v-show="isShow"><router-link :to="{path:'/personal',
 																							query:{
-																								id:user.id
+																									id:userId
 																							}}">{{name}}</router-link></li>
+					<!-- <li v-show="isShow"><router-link :to="{path:'/personal'}">{{name}}</router-link></li> -->
 					<li v-show="isShow" class="nav-pile">|</li>
 					<li v-show="isRlShow"><router-link to="/login">登录</router-link></li>
 					<li v-show="isRlShow" class="nav-pile">|</li>
@@ -40,6 +41,7 @@ export default{
 			isShow:false,
 			isRlShow:false,
 			user:{},
+			userId:0,
 		}
 	},
 	created(){
@@ -48,6 +50,7 @@ export default{
 
 	methods: {
 		getSession(){
+			this.name = null;
 			// alert("ahh");
 			this.name = sessionStorage.getItem("name");
 			console.log(this.name);
@@ -65,6 +68,8 @@ export default{
 				this.isShow = false;
 				this.isRlShow = true;
 			}
+
+			this.userId = this.user.id;
 		}
 	}
 }

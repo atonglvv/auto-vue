@@ -6,20 +6,23 @@
 
       <!--  头像  -->
       <div class="top-left">
-        <img src="../../assets/images/tx.jpg" alt="">
+        <img :src="user.head" alt="">
       </div>
 
       <!--  个人信息  -->
       <div class="top-right">
         <div class="t-r-t">
-          吕小小英雄
+          {{user.name}}
         </div>
 
         <div class="t-r-m">
           <router-link style="color:blue" to="/"><i class="el-icon-back"></i>返回首页</router-link>
         </div>
         <div class="t-r-m">
-          <router-link style="color:blue" to="/modify"><i class="el-icon-edit-outline"></i>修改资料</router-link>
+          <router-link style="color:blue" :to="{path:'/modify',
+																							query:{
+																									id:userId
+																							}}"><i class="el-icon-edit-outline"></i>修改资料</router-link>
         </div>
       </div>
     </div>
@@ -206,19 +209,19 @@
           </div>
           <div class="r-img">
             <ul>
-            <li>吕小小英雄</li><br/><br/>
-            <li>性别：男</li><br/><br/>
-            <li><i class="el-icon-date"></i>注册：2019-1-1</li><br/><br/>
+            <li>{{user.name}}</li><br/><br/>
+            <li>性别：{{user.gender == 1 ? "男" : "女"}}</li><br/><br/>
+            <li><i class="el-icon-date"></i>注册：{{user.createdTime}}</li><br/><br/>
 
-            <li><i class="el-icon-mobile-phone"></i>电话：123</li><br/><br/>
+            <li><i class="el-icon-mobile-phone"></i>电话：{{user.phone}}</li><br/><br/>
             </ul>
           </div>
           <div class="u-img">
             <ul>
-              <li>个人介绍：12345677653211111111111111111111111111111111111111111。</li><br/><br/>
+              <li>个人介绍：{{user.personalProfile}}</li><br/><br/>
               <li>账号类别：普通用户</li><br/><br/>
-              <li>居住地点：青岛</li><br/><br/>
-              <li>个人邮箱：lxxyx@163.com</li><br/><br/>
+              <li>居住地点：{{user.location}}</li><br/><br/>
+              <li>个人邮箱：{{user.email}}</li><br/><br/>
             </ul>
           </div>
           <div class="btn">
@@ -234,6 +237,7 @@
 export default {
   data(){
     return {
+      userId:'',
        form: {
           title:'',
           desc:'',
@@ -265,14 +269,18 @@ export default {
       pageCountCollection:1,
       totalCollection:0,
 
+      user:{},
+
     }
   },
 
 
   created(){
-    this.selectMyPost(1,1,2);
-    this.selectMyComment(1,1,2);
-    this.selectMyCollection(1,1,2);
+    this.userId = this.$route.query.id;
+    this.selectMyPost(this.userId,1,2);
+    this.selectMyComment(this.userId,1,2);
+    this.selectMyCollection(this.userId,1,2);
+    this.selectUser(this.userId);
   },
 
 
@@ -367,15 +375,15 @@ export default {
     //Info分页
     handleCurrentChange(val) {
         this.pageCountInfo = val;
-        this.selectMyPost(1,this.pageCountInfo,this.pageSizeInfo);
+        this.selectMyPost(this.userId,this.pageCountInfo,this.pageSizeInfo);
     },
     //Comment分页
     handleCommentChange(val) {
       this.pageCountComment = val;
-      this.selectMyComment(1,this.pageCountComment,this.pageSizeComment);
+      this.selectMyComment(this.userId,this.pageCountComment,this.pageSizeComment);
     },
     handleCollectionChange(val) {
-      this.selectMyCollection(1,val,this.pageSizeComment);
+      this.selectMyCollection(this.userId,val,this.pageSizeComment);
     },
 
     // 调用后台用户发布资讯接口
@@ -386,7 +394,7 @@ export default {
         params:{
           pageNum:pageNum,
   				pageSize:2,
-          userId:1
+          userId:this.userId
         }
       })
       .then(data => {
@@ -406,7 +414,7 @@ export default {
         params:{
           pageNum:pageNum,
           pageSize:pageSize,
-          userId:1
+          userId:this.userId
         }
       })
       .then(data => {
@@ -426,7 +434,7 @@ export default {
         params:{
           pageNum:pageNum,
           pageSize:pageSize,
-          userId:1
+          userId:this.userId
         }
       })
       .then(data => {
@@ -463,11 +471,12 @@ export default {
                 return false;
             }
             let formData = new FormData();
-            formData.append('id',1);
+            formData.append('id',this.userId);
             formData.append('title', this.form.title);
             formData.append('image', this.form.file);
             formData.append('content', this.form.desc);
             console.log(formData);
+            console.log("file = " + this.form.file);
             // that.loading = true;
             this.$axios.post('http://localhost:8088/auto/info/insertInfo', formData)
               .then(function(response) {
@@ -476,8 +485,10 @@ export default {
                     type: 'success',
                     message: '发布成功，可在我的发布中查看'
                   });
-
                   that.clearFrom();
+                  // this.selectMyPost(that.userId,1,2);
+                  // this.selectMyComment(that.userId,1,2);
+                  // this.selectMyCollection(that.userId,1,2);
               })
               .catch(function(error) {
                   console.log(error);
@@ -509,7 +520,23 @@ export default {
       this.$router.push({
         path: '/',
       })
-    }
+    },
+    selectUser(id){
+      this.$axios({
+        method: 'get',
+        url:"http://localhost:8088/auto/user/queryUser",
+        params:{
+          userId:id
+        }
+      })
+      .then(data => {
+        console.log(data)
+        this.user= data.data.res;
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
 
   }
 }

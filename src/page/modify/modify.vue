@@ -2,14 +2,17 @@
   <div class="app">
     <div class="personal-top">
       <div class="top-left">
-        <img src="../../assets/images/tx.jpg" alt="">
+        <img :src="user.head" alt="">
       </div>
       <div class="top-right">
         <div class="t-r-t">
           修改个人信息
         </div>
         <div class="t-r-m">
-          <router-link style="color:blue" to="/personal">返回个人主页</router-link>
+          <router-link style="color:blue" :to="{path:'/personal',
+																							query:{
+																									id:userId
+																							}}">返回个人主页</router-link>
         </div>
       </div>
     </div>
@@ -22,14 +25,12 @@
           <div class="personal-i">信息编辑</br>
           </div><hr>
           <div class="upload">
-            <el-upload class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
+            <el-upload action="" list-type="picture-card" :on-change="handlePictureCardChange" :on-remove="handleRemove" :limit="1" :before-upload="beforeAvatarUpload" :auto-upload="false" :file-list="formList">
+                <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="imageRef" alt="">
+            </el-dialog>
               点击上传头像
           </div>
           <div class="r-img">
@@ -37,7 +38,7 @@
               <ul><br/>
                 <li>
                   <el-form-item label="姓名：">
-                    <el-input v-model="form.name" placeholder="吕小小英雄"></el-input>
+                    <el-input v-model="form.name" placeholder="请输入昵称"></el-input>
                   </el-form-item>
                 </li><br/>
 
@@ -67,7 +68,7 @@
           </div>
           <div class="btn">
             <i class="el-icon-upload"></i>
-              <el-button type="info" round>保存</el-button>
+              <el-button type="info" round  @click="updateUser">保存</el-button>
           </div>
         </el-tab-pane>
 
@@ -91,7 +92,7 @@
           </div>
           <div class="btn">
             <i class="el-icon-upload"></i>
-              <el-button type="info" round>保存</el-button>
+              <el-button type="info" round @click="updateUser">保存</el-button>
           </div>
         </el-tab-pane>
 
@@ -110,7 +111,7 @@
 
           <div class="btn">
             <i class="el-icon-upload"></i>
-              <el-button type="info" round>保存</el-button>
+              <el-button type="info" round @click="updateUser">保存</el-button>
           </div>
         </el-tab-pane>
 
@@ -124,23 +125,40 @@
 export default {
   data(){
     return {
+      userId:'',
+      user:{},
       form: {
           name: '',
           sex: '',
           birthday:'',
           phone: '',
+          file:'',
           password:'',
           newpassword:'',
           personal:''
-        },
+      },
       tabPosition: 'left',
       imageUrl: ''
     };
   },
+
+  created(){
+    // this.user = JSON.parse(sessionStorage.getItem('user'));
+    // this.userId = user.id;
+    this.userId = this.$route.query.id;
+    console.log("userid=" + this.userId);
+    this.selectUser(this.userId);
+  },
   methods: {
-      handleAvatarSuccess(res, file) {
-        this.imageUrl = URL.createObjectURL(file.raw);
-      },
+    handlePictureCardChange(file, fileList) {
+        // this.form.imageRef = file.url;
+        this.form.file = file.raw;
+    },
+      // handleAvatarSuccess(res, file) {
+      //   this.imageUrl = URL.createObjectURL(file.raw);
+      //
+      //   this.form.file = file.raw;
+      // },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';
         const isLt2M = file.size / 1024 / 1024 < 2;
@@ -152,28 +170,100 @@ export default {
           this.$message.error('上传头像图片大小不能超过 2MB!');
         }
         return isJPG && isLt2M;
-      }
+      },
+      updateUser(){
+        var that = this;
+
+          console.log(this.form);
+          console.log("userid=" + this.userId);
+          let formData = new FormData();
+          formData.append('userId',this.userId);
+          formData.append('userName', this.form.name);
+          formData.append('phone', this.form.phone);
+          formData.append('birthday', this.form.birthday);
+          formData.append('gender', this.form.sex);
+          formData.append('avatar', this.form.file);
+          formData.append('password',this.form.password);
+          formData.append('newPassword',this.form.newpassword);
+          formData.append('personal',this.form.personal);
+          console.log(this.form.newpassword);
+          console.log(formData);
+          // that.loading = true;
+          this.$axios.post('http://localhost:8088/auto/user/updateUser', formData)
+            .then(function(response) {
+                console.log(response);
+                if (response.data.status == 1) {
+                  that.$message({
+                    type: 'success',
+                    message: '修改成功'
+                  });
+                }else {
+                  that.$message.error(response.data.msg);
+                }
+
+                that.clearFrom();
+                // this.selectMyPost(that.userId,1,2);
+                // this.selectMyComment(that.userId,1,2);
+                // this.selectMyCollection(that.userId,1,2);
+            })
+            .catch(function(error) {
+                console.log(error);
+                // that.loading = false;
+            });
+      },
+
+      selectUser(id){
+        this.$axios({
+          method: 'get',
+          url:"http://localhost:8088/auto/user/queryUser",
+          params:{
+            userId:id
+          }
+        })
+        .then(data => {
+          console.log(data)
+          this.user= data.data.res;
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      },
+      //清空资讯发布表单
+      clearFrom() {
+              //清理表单
+              this.form.name = '';
+              this.form.sex = '';
+              this.form.birthday = '';
+              this.phone = "";
+              this.form.file = '';
+              this.form.password = '';
+              this.form.newpassword = '';
+              this.form.personal = "";
+              this.formList = [];
+      },
+
     },
-    rules: {
-      sex: [
-        { required: true, required: true, message: '请选择性别', trigger: 'change' }
-      ],
-      birthday: [
-        { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
-      ],
-      password: [
-        { required: true, message: '请输入密码', trigger: 'blur' },
-        { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
-      ],
-      newpassword: [
-        { required: true, message: '请输入密码', trigger: 'blur' },
-        { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
-      ],
-    }
+  rules: {
+    sex: [
+      { required: true, required: true, message: '请选择性别', trigger: 'change' }
+    ],
+    birthday: [
+      { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+    ],
+    password: [
+      { required: true, message: '请输入密码', trigger: 'blur' },
+      { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
+    ],
+    newpassword: [
+      { required: true, message: '请输入密码', trigger: 'blur' },
+      { min: 6, max: 10, message: '长度在 6 到 10 个字符', trigger: 'blur' }
+    ],
+  },
+
 }
 </script>
 
-<style>
+<style scoped>
 .avatar-uploader .el-upload {
     border: 1px dashed #d9d9d9;
     border-radius: 6px;
