@@ -6,7 +6,7 @@
 
       <!--  头像  -->
       <div class="top-left">
-        <img :src="user.head" alt="">
+        <img :src="user.head" alt="" class="avatarimg">
       </div>
 
       <!--  个人信息  -->
@@ -205,7 +205,7 @@
           </div>
           <hr>
           <div class="img">
-            <img src="../../assets/images/tx.jpg" alt="">
+            <img :src="user.head" alt="" class="avatarimg">
           </div>
           <div class="r-img">
             <ul>
@@ -486,7 +486,7 @@ export default {
                     message: '发布成功，可在我的发布中查看'
                   });
                   that.clearFrom();
-                  // this.selectMyPost(that.userId,1,2);
+                  that.selectMyPost(that.userId,1,2);
                   // this.selectMyComment(that.userId,1,2);
                   // this.selectMyCollection(that.userId,1,2);
               })
@@ -559,6 +559,10 @@ export default {
   width: 130px;
   border-radius:250px;
   overflow: hidden;
+}
+.avatarimg{
+  width: 200px;
+  height: 200px;
 }
 .top-right{
   float: left;

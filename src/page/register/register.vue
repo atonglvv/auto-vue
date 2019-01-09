@@ -96,9 +96,19 @@ export default {
             })
             .then(data => {
               console.log(data)
-              this.$router.push({
-                path: '/login',
-              })
+              // 判断用户名密码是否正确，如果正确则跳转到首页
+              if (data.data.status == 3) {
+                this.$message({
+                  showClose: true,
+                  message: '邮箱已注册',
+                  type: 'error'
+                });
+              }
+              if (data.data.status == 1) {
+                this.$router.push({
+                  path: '/login',
+                })
+              }
             })
             .catch(error => {
               console.log(error)

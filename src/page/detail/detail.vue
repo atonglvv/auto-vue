@@ -29,16 +29,11 @@
       <div class="midd-content">
         {{user.personalProfile}}
       </div>
-      <hr/>
-      <div class="midd-tittle">
-        <p>-----他的文章-----</p><br/><br/>
-        《这是标题111》<br/><br/>《这是标题222》<br/><br/>《这是标题333》<br/><br/>
-      </div>
     </div>
     </div>
     <div class="footer">
       <div class="footer-1">
-        <el-collapse v-model="activeNames" @change="handleChange">
+        <el-collapse>
           <el-collapse-item title="点击评论" name="1" style="text-align:center;">
             <el-form ref="form" :model="form" label-width="80px">
               <el-form-item>
@@ -68,7 +63,7 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <el-button type="warning" icon="el-icon-star-off" circle size="mini"></el-button>
+        <el-button :type="type" icon="el-icon-star-off" circle size="mini" @click="collection"></el-button>
       </div>
       <hr/>
 
@@ -101,15 +96,18 @@ export default {
       userId:'',
       sessionId:'',
       comments:[],
+      type:"info",
     }
   },
   created() {
       this.infoId = this.$route.query.id;
       this.sessionId = sessionStorage.getItem("id");
+      this.clicks(this.infoId);
       this.selectInfo(this.infoId,1,1);
       // this.selectUser(this.userId);
       this.selectUser(1);
       this.selectComment(this.infoId);
+      this.selectCollection(this.infoId,this.sessionId);
   },
   methods:{
     // 调用资讯查询接口
@@ -214,6 +212,97 @@ export default {
         console.log(error)
       })
     },
+
+    selectCollection(infoId,userId){
+      var that = this;
+      this.$axios({
+        method: 'get',
+        url:"http://localhost:8088/auto/collection/queryIsCollection",
+        params:{
+          infoId:that.infoId,
+          userId:that.sessionId,
+        }
+      })
+      .then(data => {
+        console.log(data);
+        if (data.data.status == 1) {
+          that.type = "warning";
+        }else {
+          that.type = "info";
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    clicks(id){
+      this.$axios({
+        method: 'post',
+        url:"http://localhost:8088/auto/info/clickInfo",
+        data:this.$qs.stringify({
+          infoId:id
+        })
+      })
+      .then(data => {
+        console.log(data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+
+    collection(){
+
+      if (this.sessionId == '' || this.sessionId == null) {
+        this.$message({
+          showClose: true,
+          message: '请先登录',
+          type: 'error'
+        });
+        return false;
+      }
+
+      if (this.type == "info") {
+        var that = this;
+        this.$axios({
+          method: 'post',
+          url:"http://localhost:8088/auto/collection/insertCollection",
+          data:this.$qs.stringify({
+            infoId:that.infoId,
+            userId:that.sessionId,
+          })
+        })
+        .then(data => {
+          console.log(data);
+          if (data.data.status == 1) {
+            that.type = "warning";
+          }else {
+            that.type = "info";
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }else if (this.type == "warning") {
+        var that = this;
+        this.$axios({
+          method: 'post',
+          url:"http://localhost:8088/auto/collection/cancelCollection",
+          data:this.$qs.stringify({
+            infoId:that.infoId,
+            userId:that.sessionId,
+          })
+        })
+        .then(data => {
+          console.log(data);
+          this.type = "info";
+        })
+        .catch(error => {
+          console.log(error)
+        })
+      }
+    }
   }
 }
 </script>
@@ -273,16 +362,15 @@ export default {
 }
 .midd-name{
   margin-top: 30px;
-  margin-left: 37%;
   font-size: 20px;
+  text-align:center;
 }
 .midd-content{
   margin-top: 30px;
   margin-left: 20px;
   margin-right: 20px;
   font-size: 15px;
-  padding-left: 60px;
-  /* padding: 0 auto; */
+  text-align:center;
 }
 .midd-tittle{
     margin-top: 30px;

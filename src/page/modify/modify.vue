@@ -2,7 +2,7 @@
   <div class="app">
     <div class="personal-top">
       <div class="top-left">
-        <img :src="user.head" alt="">
+        <img :src="user.head" alt="" class="avatarimg">
       </div>
       <div class="top-right">
         <div class="t-r-t">
@@ -294,6 +294,12 @@ export default {
   background: url(../../assets/images/personal.jpg);
 
 }
+
+.avatarimg{
+  width: 200px;
+  height: 200px;
+}
+
 .top-left{
   float: left;
   margin-left: 180px;

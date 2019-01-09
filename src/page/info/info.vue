@@ -20,7 +20,11 @@
             </div>
             <div class="card-right">
               <div class="content-top">
-                {{item.title}}
+                <router-link :to="{path:'/detail',
+  																	query:{
+  																			id:item.id
+  																	}}">{{item.title}}</router-link>
+
               </div>
               <div class="content">
                 {{item.title}}
@@ -94,6 +98,12 @@ export default {
         console.log(error)
       })
       console.log('submit!');
+    },
+    intoDetail(){
+      alert("clink");
+      this.$router.push({
+        path: '/',
+      })
     }
   }
 }
