@@ -132,17 +132,17 @@ export default{
 					list:[
 						{
 							name:"本田CBR600RR",
-							url:"http://www.wwtliu.com/blog",
+							url:"/",
 							hot:false
 						},
 						{
 							name:"铃木GSX-R600",
-							url:"http://www.wwtliu.com/blog",
+							url:"#",
 							hot:true
 						},
 						{
 							name:"川崎Ninja 250R",
-							url:"http://www.wwtliu.com/blog",
+							url:"/",
 							hot:false
 						}
 					]
@@ -152,22 +152,22 @@ export default{
 					list:[
 						{
 							name:"杜卡迪大魔鬼Diavel",
-							url:"http://www.wwtliu.com/blog",
+							url:"/",
 							hot:false
 						},
 						{
 							name:"杜卡迪Monster 796",
-							url:"http://www.wwtliu.com/blog",
+							url:"/",
 							hot:true
 						},
 						{
 							name:"川崎GTR1400",
-							url:"http://www.wwtliu.com/blog",
+							url:"/",
 							hot:false
 						},
 						{
 							name:"雅马哈FJR1300",
-							url:"http://www.wwtliu.com/blog",
+							url:"/",
 							hot:true
 						}
 					]

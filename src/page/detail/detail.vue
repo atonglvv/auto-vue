@@ -2,38 +2,17 @@
   <div class="app">
     <div class="top">
       <br/>
-      <p style="font-size:30px;">这是标题</p><br/><br/><br/>
-      <p style="font-size:20px;">这是作者</p><br/>
-      <p style="font-size:18px;">2019-01-01</p><br/><br/>
-      <p style="font-size:15px;">这是文章摘要</p><br/>
+      <p style="font-size:30px;">{{info.title}}</p><br/><br/><br/>
+      <p style="font-size:20px;">{{info.name}}</p><br/>
+      <p style="font-size:18px;">{{info.createdTime}}</p><br/><br/>
+      <p style="font-size:15px;">{{info.title}}</p><br/>
     </div>
     <div class="left">
       <div class="left-content">
-      后来
-      我总算学会了 如何去爱
-      可惜你 早已远去
-      消失在人海
-      后来 终于在眼泪中明白
-      有些人 一旦错过就不再
-      你都如何回忆我
-      带着笑或是很沉默
-      这些年来
-      有没有人能让你不寂寞
-      后来
-      我总算学会了 如何去爱
-      可惜你 早已远去
-      消失在人海
-      后来 终于在眼泪中明白
-      有些人 一旦错过就不再
-      后来
-      我总算学会了 如何去爱
-      可惜你 早已远去
-      消失在人海
-      后来 终于在眼泪中明白
-      有些人 一旦错过就不再
+        {{info.textBody}}
       </div>
       <div class="left-img">
-        <img src="../../assets/images/g.png" alt="" >
+        <img :src="info.image" alt="" >
       </div>
     </div>
 
@@ -42,13 +21,13 @@
     <div class="midd">
       <div class="midd-in">
       <div class="midd-img">
-        <img src="../../assets/images/tx.jpg" alt="">
+        <img :src="user.head" alt="">
       </div>
       <div class="midd-name">
-        吕小小英雄
+        {{user.name}}
       </div>
       <div class="midd-content">
-        这是个人介绍这是个人介绍这是个人介绍这是个人介绍这是个人介绍这是个人介绍这是个人介绍这是个人介绍这是个人介绍
+        {{user.personalProfile}}
       </div>
       <hr/>
       <div class="midd-tittle">
@@ -74,18 +53,18 @@
       </div>
 
 
-      <div class="footer-2-0">
+      <!-- <div class="footer-2-0">
       <el-rate
         v-model="value2"
         :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
       </el-rate><br/>
-      </div>
+      </div> -->
       <div class="footer-2-1">
-        <i class="el-icon-view">：999次</i>
+        <i class="el-icon-view">：{{info.clicks}}次</i>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <i class="el-icon-star-on">：999次</i>
+        <!-- <i class="el-icon-star-on">：999次</i> -->
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -93,30 +72,13 @@
       </div>
       <hr/>
 
-      <div class="footer-3">
+      <div class="footer-3" v-for="item in comments">
 
         <div class="footer-3-1">
-          来自用户--吕小小英雄--的评论：
+          {{item.name}}：
         </div>
         <div class="footer-3-2">
-          你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！
-          <hr/>
-        </div><br/>
-
-        <div class="footer-3-1">
-          来自用户--吕中中英雄--的评论：
-        </div>
-        <div class="footer-3-2">
-          你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！
-          <hr/>
-        </div><br/>
-
-        <div class="footer-3-1">
-          来自用户--吕大大英雄--的评论：
-        </div>
-        <div class="footer-3-2">
-          你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！你的牌打的忒好啦！
-          <hr/>
+          {{item.content}}
         </div><br/>
       </div>
 
@@ -131,13 +93,127 @@ export default {
     return{
       form: {
           comment: ''
-        },
-      id:"",
-      value2: null
+      },
+      infoId:null,
+      value2: null,
+      info:{},
+      user:{},
+      userId:'',
+      sessionId:'',
+      comments:[],
     }
   },
   created() {
-      this.id = this.$route.query.id;
+      this.infoId = this.$route.query.id;
+      this.sessionId = sessionStorage.getItem("id");
+      this.selectInfo(this.infoId,1,1);
+      // this.selectUser(this.userId);
+      this.selectUser(1);
+      this.selectComment(this.infoId);
+  },
+  methods:{
+    // 调用资讯查询接口
+    selectInfo(infoId,pageNum,pageSize){
+      var that = this;
+      this.$axios({
+        method: 'get',
+        url:"http://localhost:8088/auto/info",
+        params:{
+          pageNum:pageNum,
+  				pageSize:pageSize,
+          infoId:that.infoId
+        }
+      })
+      .then(data => {
+        console.log(data);
+        that.info = (data.data.res);
+        that.userId = that.info.userId,
+        //查询该用户信息
+        selectUser(that.userId);
+        console.log("this.info = " + that.info);
+        console.log("this.info.userId = " + that.userId);
+        // console.log("this.info = ");
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    //查询用户
+    selectUser(id){
+      console.log("this.id = " + id);
+      this.$axios({
+        method: 'get',
+        url:"http://localhost:8088/auto/user/queryUser",
+        params:{
+          userId:id
+        }
+      })
+      .then(data => {
+        console.log(data)
+        this.user= data.data.res;
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    onSubmit(){
+
+      if (this.sessionId == '' || this.sessionId == null) {
+        this.$message({
+          showClose: true,
+          message: '请先登录',
+          type: 'error'
+        });
+        return false;
+      }
+
+      var that = this;
+      this.$axios({
+        method: 'post',
+        url:"http://localhost:8088/auto/comment/insertComment",
+        data:this.$qs.stringify({
+          userId:this.sessionId,
+          infoId:this.info.id,
+          content:this.form.comment
+        })
+      })
+      .then(data => {
+        that.$message({
+          type: 'success',
+          message: '评论成功'
+        });
+        that.clearFrom();
+        that.selectComment(that.infoId);
+        console.log(data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
+    //清空资讯发布表单
+    clearFrom() {
+      //清理表单
+      this.form.comment = '';
+    },
+
+    //查询该资讯下所有评论
+    selectComment(infoId){
+      var that = this;
+      this.$axios({
+        method: 'get',
+        url:"http://localhost:8088/auto/comment/queryInfoComment",
+        params:{
+          infoId:that.infoId
+        }
+      })
+      .then(data => {
+        console.log(data);
+        that.comments = data.data.res;
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
   }
 }
 </script>
@@ -205,6 +281,8 @@ export default {
   margin-left: 20px;
   margin-right: 20px;
   font-size: 15px;
+  padding-left: 60px;
+  /* padding: 0 auto; */
 }
 .midd-tittle{
     margin-top: 30px;
