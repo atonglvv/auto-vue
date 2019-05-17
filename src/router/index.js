@@ -9,6 +9,7 @@ import Info from "@/page/info/info"
 import Personal from "@/page/personal/personal"
 import Modify from "@/page/modify/modify"
 import Detail from "@/page/detail/detail"
+import Motor from "@/page/motor/motor"
 Vue.use(Router)
 
 export default new Router({
@@ -52,6 +53,11 @@ export default new Router({
       path: '/detail',
       name: 'detail',
       component: Detail
+    },
+    {
+      path: '/motor',
+      name: 'motor',
+      component: Motor
     }
   ]
 })

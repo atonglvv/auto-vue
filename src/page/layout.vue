@@ -10,7 +10,11 @@
 					<h3>{{ product.category }}</h3>
 					<ul>
 						<li v-for="item in product.list">
-							<a target="_blank" :href="item.url">{{ item.name }}</a>
+							<!-- <a target="_blank" :href="item.url">{{ item.name }}</a> -->
+							<router-link class="hot-info" :to="{path:'/motor',
+																									query:{
+																										id:item.id
+																									}}">{{ item.name }}</router-link>
 							<span v-if="item.hot" class="hot-tag">HOT</span>
 						</li>
 					</ul>
@@ -126,71 +130,44 @@ export default{
       	}
       ],
 			news:[],
-			productList:[
-				{
-					category:"跑车",
-					list:[
-						{
-							name:"本田CBR600RR",
-							url:"/",
-							hot:false
-						},
-						{
-							name:"铃木GSX-R600",
-							url:"#",
-							hot:true
-						},
-						{
-							name:"川崎Ninja 250R",
-							url:"/",
-							hot:false
-						}
-					]
-				},
-				{
-					category:"街车",
-					list:[
-						{
-							name:"杜卡迪大魔鬼Diavel",
-							url:"/",
-							hot:false
-						},
-						{
-							name:"杜卡迪Monster 796",
-							url:"/",
-							hot:true
-						},
-						{
-							name:"川崎GTR1400",
-							url:"/",
-							hot:false
-						},
-						{
-							name:"雅马哈FJR1300",
-							url:"/",
-							hot:true
-						}
-					]
-				}
-			]
+			productList:[]
 		}
 	},
 	created(){
-		this.$axios({
-      method: 'get',
-      url:"http://localhost:8088/auto/info",
-			params:{
-				pageNum:1,
-				pageSize:5
-			}
-    })
-    .then(data => {
-      console.log(data)
-      this.news = data.data.res.list;
-    })
-    .catch(error => {
-      console.log(error)
-    })
+		this.getInfo();
+		this.getMotorInfo();
+	},
+	methods: {
+		getInfo() {
+			this.$axios({
+	      method: 'get',
+	      url:"http://localhost:8088/auto/info",
+				params:{
+					pageNum:1,
+					pageSize:5
+				}
+	    })
+	    .then(data => {
+	      console.log(data)
+	      this.news = data.data.res.list;
+	    })
+	    .catch(error => {
+	      console.log(error)
+	    })
+		},
+		getMotorInfo() {
+			this.$axios({
+				method: 'get',
+				url:"http://192.168.62.27:8088/auto/category_motor/query",
+			})
+			.then(data => {
+				console.log(data)
+				this.productList = data.data.res;
+			})
+			.catch(error => {
+				console.log(error)
+			})
+		}
 	}
 }
 
