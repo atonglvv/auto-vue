@@ -1,9 +1,8 @@
 <template>
 	<div class="app-foot">
 		<br/>
-		J1-第3小组|Auto官网|机车之家|全球最大的机车资讯平台<br/>
-		Auto.com |QDDU-J1-group3|member-LT-GYH-WC-WY<br/>
-		------联系我们：1550919167@qq.com-------
+		Auto官网|机车之家|全球最大的机车资讯平台<br/>
+		Auto.com |QDDU|member-LT-LYH-ZYH<br/>
 
 	</div>
 </template>

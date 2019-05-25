@@ -10,6 +10,11 @@ import Personal from "@/page/personal/personal"
 import Modify from "@/page/modify/modify"
 import Detail from "@/page/detail/detail"
 import Motor from "@/page/motor/motor"
+import MotorInfo from "@/page/motor/motorInfo"
+import MotorAll from "@/page/motor/motorAll"
+
+import api from "@/js/api"
+Vue.prototype.GLOBAL = api
 Vue.use(Router)
 
 export default new Router({
@@ -58,6 +63,16 @@ export default new Router({
       path: '/motor',
       name: 'motor',
       component: Motor
+    },
+    {
+      path: '/motorInfo',
+      name: 'motorInfo',
+      component: MotorInfo
+    },
+    {
+      path: '/motorAll',
+      name: 'motorAll',
+      component: MotorAll
     }
   ]
 })

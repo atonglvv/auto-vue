@@ -14,6 +14,8 @@
 				<ul class="nav-list">
 					<li><router-link to="/info">资讯</router-link></li>
 					<li class="nav-pile">|</li>
+					<li><router-link to="/motorAll">机车</router-link></li>
+					<li class="nav-pile">|</li>
 					<li v-show="isShow"><router-link :to="{path:'/personal',
 																							query:{
 																									id:userId

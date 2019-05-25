@@ -11,7 +11,7 @@
 					<ul>
 						<li v-for="item in product.list">
 							<!-- <a target="_blank" :href="item.url">{{ item.name }}</a> -->
-							<router-link class="hot-info" :to="{path:'/motor',
+							<router-link class="hot-info" :to="{path:'/motorInfo',
 																									query:{
 																										id:item.id
 																									}}">{{ item.name }}</router-link>
@@ -158,7 +158,8 @@ export default{
 		getMotorInfo() {
 			this.$axios({
 				method: 'get',
-				url:"http://192.168.62.27:8088/auto/category_motor/query",
+				// url:"http://192.168.62.27:8088/auto/category_motor/query",
+				url: this.GLOBAL.baseURL + "/auto/category_motor/query",
 			})
 			.then(data => {
 				console.log(data)
