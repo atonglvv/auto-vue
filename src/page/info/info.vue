@@ -71,7 +71,7 @@ export default {
   created(){
     this.$axios({
       method: 'get',
-      url:"http://localhost:8088/auto/info"
+      url: this.GLOBAL.baseURL + "/auto/info"
     })
     .then(data => {
       console.log(data)
@@ -85,7 +85,7 @@ export default {
     onSubmit() {
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/info",
+        url: this.GLOBAL.baseURL + "/auto/info",
         params:{
           title:this.formInline.title
         }

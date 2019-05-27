@@ -85,7 +85,7 @@ export default {
           if (valid) {
             this.$axios({
               method: 'post',
-              url:"http://localhost:8088/auto/user/register",
+              url: this.GLOBAL.baseURL + "/auto/user/register",
               data:this.$qs.stringify({
                 userName:this.ruleForm.name,
                 userPassword:this.ruleForm.password,

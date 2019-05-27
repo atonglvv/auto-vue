@@ -141,7 +141,7 @@ export default{
 		getInfo() {
 			this.$axios({
 	      method: 'get',
-	      url:"http://localhost:8088/auto/info",
+	      url: this.GLOBAL.baseURL + "/auto/info",
 				params:{
 					pageNum:1,
 					pageSize:5

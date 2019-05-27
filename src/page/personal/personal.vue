@@ -295,7 +295,7 @@ export default {
         }).then(() => {
           this.$axios({
             method: 'post',
-            url:"http://localhost:8088/auto/info/deleteInfo",
+            url:  this.GLOBAL.baseURL + "/auto/info/deleteInfo",
             data:this.$qs.stringify({
               id:infoId
             })
@@ -324,7 +324,7 @@ export default {
         }).then(() => {
           this.$axios({
             method: 'post',
-            url:"http://localhost:8088/auto/comment/deleteComment",
+            url:  this.GLOBAL.baseURL + "/auto/comment/deleteComment",
             data:this.$qs.stringify({
               id:commentId
             })
@@ -353,7 +353,7 @@ export default {
         }).then(() => {
           this.$axios({
             method: 'post',
-            url:"http://localhost:8088/auto/collection/deleteCollection",
+            url:  this.GLOBAL.baseURL + "/auto/collection/deleteCollection",
             data:this.$qs.stringify({
               id:collectionId
             })
@@ -390,7 +390,7 @@ export default {
     selectMyPost(userId,pageNum,pageSize){
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/info",
+        url:  this.GLOBAL.baseURL + "/auto/info",
         params:{
           pageNum:pageNum,
   				pageSize:2,
@@ -410,7 +410,7 @@ export default {
     selectMyComment(userId,pageNum,pageSize){
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/comment/queryMyComment",
+        url:  this.GLOBAL.baseURL + "/auto/comment/queryMyComment",
         params:{
           pageNum:pageNum,
           pageSize:pageSize,
@@ -430,7 +430,7 @@ export default {
     selectMyCollection(userId,pageNum,pageSize){
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/collection/queryMyCollection",
+        url: this.GLOBAL.baseURL + "/auto/collection/queryMyCollection",
         params:{
           pageNum:pageNum,
           pageSize:pageSize,
@@ -478,7 +478,7 @@ export default {
             console.log(formData);
             console.log("file = " + this.form.file);
             // that.loading = true;
-            this.$axios.post('http://localhost:8088/auto/info/insertInfo', formData)
+            this.$axios.post( this.GLOBAL.baseURL + '/auto/info/insertInfo', formData)
               .then(function(response) {
                   console.log(response);
                   that.$message({
@@ -524,7 +524,7 @@ export default {
     selectUser(id){
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/user/queryUser",
+        url: this.GLOBAL.baseURL + "/auto/user/queryUser",
         params:{
           userId:id
         }

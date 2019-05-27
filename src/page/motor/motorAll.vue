@@ -15,19 +15,19 @@
         <el-col :span="8" v-for="item in datainfo" class="el-col">
           <el-card shadow="hover">
             <div class="card-left">
-              <img :src="item.image" class="info-img">
+              <img :src="item.img" class="info-img">
               <!-- <img src="../../assets/slideShow/j2.jpg" class="info-img"> -->
             </div>
             <div class="card-right">
               <div class="content-top">
-                <router-link :to="{path:'/detail',
+                <router-link :to="{path:'/motorInfo',
   																	query:{
   																			id:item.id
-  																	}}">{{item.title}}</router-link>
+  																	}}">{{item.name}}</router-link>
 
               </div>
-              <div class="content">
-                {{item.title}}
+              <!-- <div class="content">
+                {{item.name}}
               </div>
               <div class="content-bottom">
                   <div class="author">
@@ -36,7 +36,7 @@
                   <div class="time">
                     {{item.createdTime}}
                   </div>
-              </div>
+              </div> -->
             </div>
           </el-card>
         </el-col>
@@ -48,8 +48,6 @@
 </template>
 
 <script>
-// import Headers from "../../components/headers"
-// import Footers from "../../components/footers"
 import Headers from "@/components/headers"
 import Footers from "@/components/footers"
 export default {
@@ -69,36 +67,40 @@ export default {
 		}
   },
   created(){
-    this.$axios({
-      method: 'get',
-      url:"http://localhost:8088/auto/info"
-    })
-    .then(data => {
-      console.log(data)
-      this.datainfo = data.data.res.list;
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    this.queryMotor();
   },
   methods: {
+    queryMotor() {
+      this.$axios({
+        method: 'get',
+        url: this.GLOBAL.baseURL + "/auto/queryAuto",
+      })
+      .then(data => {
+        console.log(data)
+        this.datainfo = data.data.res;
+      })
+      .catch(error => {
+        console.log(error)
+      })
+    },
     onSubmit() {
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/info",
+        url: this.GLOBAL.baseURL + "/auto/queryAuto",
         params:{
-          title:this.formInline.title
+          name:this.formInline.title
         }
       })
       .then(data => {
         console.log(data)
-        this.datainfo = data.data.res.list;
+        this.datainfo = data.data.res;
       })
       .catch(error => {
         console.log(error)
       })
       console.log('submit!');
     },
+
     intoDetail(){
       alert("clink");
       this.$router.push({
@@ -145,7 +147,7 @@ export default {
   float:left;
   width: 450px;
   height: 200px;
-  margin: 10px 10px;
+  margin: 80px 10px;
 }
 .author{
   width: 100px;

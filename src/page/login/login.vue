@@ -57,7 +57,7 @@ export default {
           if (valid) {
             this.$axios({
               method: 'post',
-              url:"http://localhost:8088/auto/user/login",
+              url:this.GLOBAL.baseURL + "/auto/user/login",
               data:this.$qs.stringify({
                 email:this.ruleForm.mail,
                 userPassword:this.ruleForm.password
@@ -67,12 +67,18 @@ export default {
               console.log(data);
               // 判断用户名密码是否正确，如果正确则跳转到首页
               if (data.data.status == 1) {
-                sessionStorage.setItem("name", data.data.res.name);
-                sessionStorage.setItem("id", data.data.res.id);
-                sessionStorage.setItem("user", JSON.stringify(data.data.res));
-                this.$router.push({
-                  path: '/',
-                })
+                if (data.data.res.isAdmin == '1') {
+                  this.$router.push({
+                    path: '/motor',
+                  })
+                }else {
+                  sessionStorage.setItem("name", data.data.res.name);
+                  sessionStorage.setItem("id", data.data.res.id);
+                  sessionStorage.setItem("user", JSON.stringify(data.data.res));
+                  this.$router.push({
+                    path: '/',
+                  })
+                }
               }else {
                 console.log(data.data.msg)
                 this.ruleForm.errorMsg = data.data.msg

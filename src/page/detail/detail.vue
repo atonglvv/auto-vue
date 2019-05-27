@@ -115,7 +115,7 @@ export default {
       var that = this;
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/info",
+        url: this.GLOBAL.baseURL + "/auto/info",
         params:{
           pageNum:pageNum,
   				pageSize:pageSize,
@@ -141,7 +141,7 @@ export default {
       console.log("this.id = " + id);
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/user/queryUser",
+        url:  this.GLOBAL.baseURL + "/auto/user/queryUser",
         params:{
           userId:id
         }
@@ -168,7 +168,7 @@ export default {
       var that = this;
       this.$axios({
         method: 'post',
-        url:"http://localhost:8088/auto/comment/insertComment",
+        url: this.GLOBAL.baseURL + "/auto/comment/insertComment",
         data:this.$qs.stringify({
           userId:this.sessionId,
           infoId:this.info.id,
@@ -199,7 +199,7 @@ export default {
       var that = this;
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/comment/queryInfoComment",
+        url: this.GLOBAL.baseURL + "/auto/comment/queryInfoComment",
         params:{
           infoId:that.infoId
         }
@@ -217,7 +217,7 @@ export default {
       var that = this;
       this.$axios({
         method: 'get',
-        url:"http://localhost:8088/auto/collection/queryIsCollection",
+        url: this.GLOBAL.baseURL + "/auto/collection/queryIsCollection",
         params:{
           infoId:that.infoId,
           userId:that.sessionId,
@@ -239,7 +239,7 @@ export default {
     clicks(id){
       this.$axios({
         method: 'post',
-        url:"http://localhost:8088/auto/info/clickInfo",
+        url: this.GLOBAL.baseURL + "/auto/info/clickInfo",
         data:this.$qs.stringify({
           infoId:id
         })
@@ -267,7 +267,7 @@ export default {
         var that = this;
         this.$axios({
           method: 'post',
-          url:"http://localhost:8088/auto/collection/insertCollection",
+          url: this.GLOBAL.baseURL + "/auto/collection/insertCollection",
           data:this.$qs.stringify({
             infoId:that.infoId,
             userId:that.sessionId,
@@ -288,7 +288,7 @@ export default {
         var that = this;
         this.$axios({
           method: 'post',
-          url:"http://localhost:8088/auto/collection/cancelCollection",
+          url: this.GLOBAL.baseURL + "/auto/collection/cancelCollection",
           data:this.$qs.stringify({
             infoId:that.infoId,
             userId:that.sessionId,
