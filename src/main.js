@@ -7,6 +7,8 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 // import globalUrl from ''
 
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 //全局注册，使用方法为:this.$axios
